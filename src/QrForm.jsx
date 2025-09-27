@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./QrForm.css"; // Tạo file CSS riêng
+import "./QrForm.css";
 
 const QrForm = () => {
   const [url, setUrl] = useState("");
@@ -30,13 +30,26 @@ const QrForm = () => {
         }
       );
 
-      setQrImage(res.data.qrImage);
+      // thêm timestamp để tránh cache
+      const timestamp = Date.now();
+      setQrImage(`${res.data.qrImage}?t=${timestamp}`);
     } catch (err) {
       console.error(err);
       setError("Lỗi khi tạo QR code. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDownload = () => {
+    if (!qrImage) return;
+
+    const link = document.createElement("a");
+    link.href = qrImage;
+    link.download = `qr_${Date.now()}.png`; // tên file theo thời gian
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -65,8 +78,8 @@ const QrForm = () => {
             />
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="submit-btn"
             disabled={loading}
           >
@@ -100,11 +113,12 @@ const QrForm = () => {
             <div className="qr-image-container">
               <img src={qrImage} alt="QR Code" className="qr-image" />
               <div className="qr-actions">
-                <button className="action-btn download-btn">
+                <button
+                  className="action-btn download-btn"
+                  type="button"
+                  onClick={handleDownload}
+                >
                   <i className="fas fa-download"></i> Tải xuống
-                </button>
-                <button className="action-btn share-btn">
-                  <i className="fas fa-share-alt"></i> Chia sẻ
                 </button>
               </div>
             </div>
