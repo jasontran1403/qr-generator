@@ -30,9 +30,13 @@ const QrForm = () => {
         }
       );
 
-      // thêm timestamp để tránh cache
-      const timestamp = Date.now();
-      setQrImage(`${res.data.qrImage}?t=${timestamp}`);
+      let qr = res.data.qrImage;
+      if (qr.startsWith("http")) {
+        // Trường hợp server trả về URL
+        qr = `${qr}?t=${Date.now()}`;
+      }
+      // Nếu là base64 (data:image/png;base64,...) thì giữ nguyên
+      setQrImage(qr);
     } catch (err) {
       console.error(err);
       setError("Lỗi khi tạo QR code. Vui lòng thử lại.");
@@ -46,7 +50,7 @@ const QrForm = () => {
 
     const link = document.createElement("a");
     link.href = qrImage;
-    link.download = `qr_${Date.now()}.png`; // tên file theo thời gian
+    link.download = `qr_${Date.now()}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -78,11 +82,7 @@ const QrForm = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="submit-btn"
-            disabled={loading}
-          >
+          <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? (
               <>
                 <i className="fas fa-spinner fa-spin"></i>
