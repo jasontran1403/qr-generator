@@ -4,7 +4,6 @@ import "./QrForm.css"; // Tạo file CSS riêng
 
 const QrForm = () => {
   const [url, setUrl] = useState("");
-  const [websiteName, setWebsiteName] = useState("");
   const [qrImage, setQrImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -18,7 +17,7 @@ const QrForm = () => {
     try {
       const formData = new URLSearchParams();
       formData.append("link", url);
-      formData.append("websiteName", websiteName);
+      formData.append("websiteName", "");
 
       const res = await axios.post(
         "https://overenthusiastically-caespitose-allegra.ngrok-free.app/api/v1/auth/generate",
@@ -52,20 +51,6 @@ const QrForm = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="qr-form">
-          <div className="form-group">
-            <label htmlFor="websiteName">
-              <i className="fas fa-globe"></i> Tên website
-            </label>
-            <input
-              id="websiteName"
-              type="text"
-              placeholder="Ví dụ: Google, Facebook..."
-              value={websiteName}
-              onChange={(e) => setWebsiteName(e.target.value)}
-              required
-            />
-          </div>
-
           <div className="form-group">
             <label htmlFor="url">
               <i className="fas fa-link"></i> URL
