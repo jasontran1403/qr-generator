@@ -30,7 +30,7 @@ const QrForm = () => {
       }
 
       const res = await axios.post(
-        "https://overenthusiastically-caespitose-allegra.ngrok-free.app/api/v1/auth/generate",
+        "https://api.glossify.salon/api/v1/auth/generate",
         formData,
         {
           headers: {
