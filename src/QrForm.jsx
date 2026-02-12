@@ -182,7 +182,7 @@ const QrForm = () => {
             <label>Khối lượng gói</label>
             <input
               type="text"
-              placeholder="Khối lượng gói: 500 gr"
+              placeholder="Khối lượng gói: 500gr"
               value={packageWeight}
               onChange={(e) => setPackageWeight(e.target.value)}
               required
@@ -218,19 +218,19 @@ const QrForm = () => {
             className={`type-btn ${qrType === "url" ? "active" : ""}`}
             onClick={() => handleQrTypeChange("url")}
           >
-            <i className="fas fa-link"></i> QR URL
+            <i className="fas fa-link"></i> URL
           </button>
           <button
             className={`type-btn ${qrType === "text" ? "active" : ""}`}
             onClick={() => handleQrTypeChange("text")}
           >
-            <i className="fas fa-font"></i> QR Text
+            <i className="fas fa-font"></i> Text
           </button>
           <button
             className={`type-btn ${qrType === "product" ? "active" : ""}`}
             onClick={() => handleQrTypeChange("product")}
           >
-            <i className="fas fa-cheese"></i> QR Sản phẩm
+            <i className="fas fa-cheese"></i> Sản phẩm
           </button>
         </div>
 
