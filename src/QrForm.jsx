@@ -140,9 +140,22 @@ const QrForm = () => {
             <label>Tên sản phẩm</label>
             <input
               type="text"
-              placeholder="VD: Cheddar"
+              placeholder="Tên sản phẩm: Cheddar"
               value={productName}
-              onChange={(e) => setProductName(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                const filtered = value.replace(
+                  /[^a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]/g,
+                  ''
+                );
+                setProductName(filtered);
+              }}
+              onBeforeInput={(e) => {
+                const char = e.data || '';
+                if (!/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]*$/.test(char)) {
+                  e.preventDefault();
+                }
+              }}
               required
             />
           </div>
@@ -169,7 +182,7 @@ const QrForm = () => {
             <label>Khối lượng gói</label>
             <input
               type="text"
-              placeholder="VD: 500gr"
+              placeholder="Khối lượng gói: 500 gr"
               value={packageWeight}
               onChange={(e) => setPackageWeight(e.target.value)}
               required
@@ -179,7 +192,7 @@ const QrForm = () => {
             <label>Khối lượng mẻ sản xuất</label>
             <input
               type="text"
-              placeholder="VD: 30kg"
+              placeholder="Khối lượng mẻ sản xuất: 30 kg"
               value={batchWeight}
               onChange={(e) => setBatchWeight(e.target.value)}
               required
