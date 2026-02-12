@@ -17,7 +17,58 @@ body {
   justify-content: center;
 }
 
-/* QR Type Selector */
+/* Main Container */
+.qr-container {
+  padding: 20px;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  z-index: 1;
+}
+
+.qr-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Header */
+.qr-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.qr-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.qr-icon i {
+  font-size: 2rem;
+  color: white;
+}
+
+.qr-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 8px;
+}
+
+.qr-header p {
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+/* Type Selector */
 .qr-type-selector {
   display: flex;
   gap: 10px;
@@ -55,304 +106,11 @@ body {
   box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
 }
 
-/* Text Input */
-.text-input {
-  resize: vertical;
-  min-height: 80px;
-  font-family: inherit;
-  line-height: 1.5;
-  padding: 14px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: #f8fafc;
-}
-
-.text-input:focus {
-  outline: none;
-  border-color: #667eea;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.text-input::placeholder {
-  color: #a0aec0;
-}
-
-/* QR Content Preview */
-.qr-content-preview {
-  margin: 15px 0;
-  padding: 12px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border-left: 4px solid #007bff;
-}
-
-.qr-content-preview p {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  color: #495057;
-}
-
-.qr-content-preview code {
-  background: #e9ecef;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 13px;
-  word-break: break-all;
-  color: #495057;
-  display: block;
-}
-
-/* QR Result Overlay - QUAN TRỌNG: Đảm bảo overlay thoát khỏi container */
-.qr-overlay {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  right: 50%;
-  bottom: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999; /* Tăng z-index rất cao */
-  padding: 20px;
-  animation: fadeIn 0.3s ease;
-  width: 90vw; /* 90% viewport width cho mobile */
-}
-
-.qr-result-modal {
-  background: white;
-  border-radius: 24px;
-  padding: 40px;
-  max-height: 85vh;
-  position: relative;
-  animation: slideUp 0.3s ease;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.close-btn {
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  background: #f8f9fa;
-  border: none;
-  font-size: 20px;
-  color: #6c757d;
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  z-index: 10;
-  border: 2px solid #e9ecef;
-}
-
-.close-btn:hover {
-  background: #e9ecef;
-  color: #495057;
-  transform: rotate(90deg);
-  border-color: #dee2e6;
-}
-
-.qr-result-modal .result-header {
-  text-align: center;
-  margin-bottom: 30px;
-  padding-right: 0;
-}
-
-.qr-result-modal .result-header i {
-  color: #48bb78;
-  font-size: 60px;
-  margin-bottom: 20px;
-}
-
-.qr-result-modal .result-header h3 {
-  color: #2d3748;
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.3;
-}
-
-.qr-result-modal .qr-image-container {
-  text-align: center;
-  background: #f7fafc;
-  padding: 30px;
-  border-radius: 20px;
-  border: 2px solid #e2e8f0;
-  margin-bottom: 25px;
-}
-
-.qr-result-modal .qr-image {
-  max-width: 300px;
-  width: 100%;
-  height: auto;
-  border: 2px solid #e2e8f0;
-  border-radius: 16px;
-  margin: 0 auto;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-.qr-result-modal .qr-content-preview {
-  margin: 25px 0;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 16px;
-  border-left: 6px solid #667eea;
-  border: 2px solid #e9ecef;
-}
-
-.qr-result-modal .qr-content-preview p {
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  color: #2d3748;
-  text-align: left;
-  font-weight: 700;
-}
-
-.qr-result-modal .qr-content-preview code {
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-  font-size: 15px;
-  word-break: break-all;
-  color: #495057;
-  display: block;
-  text-align: left;
-  border: 2px solid #dee2e6;
-  line-height: 1.5;
-  font-family: 'Courier New', monospace;
-}
-
-.qr-result-modal .qr-actions {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.qr-result-modal .action-btn {
-  padding: 16px 32px;
-  border: none;
-  border-radius: 16px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  justify-content: center;
-  min-height: 56px;
-}
-
-.qr-result-modal .download-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.qr-result-modal .download-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
-}
-
-.qr-result-modal .close-modal-btn {
-  background: #6c757d;
-  color: white;
-  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
-}
-
-.qr-result-modal .close-modal-btn:hover {
-  background: #5a6268;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(108, 117, 125, 0.4);
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Main Container Styles */
-.qr-container {
-  padding: 20px;
-  width: 100%;
-  max-width: 480px;
-  position: relative; /* Thêm relative để chứa form bình thường */
-  z-index: 1; /* Đảm bảo form nằm dưới overlay */
-}
-
-.qr-card {
-  background: white;
-  border-radius: 20px;
-  padding: 40px 30px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  position: relative;
-}
-
-.qr-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.qr-icon {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-}
-
-.qr-icon i {
-  font-size: 2rem;
-  color: white;
-}
-
-.qr-header h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #2d3748;
-  margin-bottom: 8px;
-}
-
-.qr-header p {
-  color: #718096;
-  font-size: 0.95rem;
-}
-
+/* Form */
 .qr-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 .form-group {
@@ -375,7 +133,8 @@ body {
   width: 16px;
 }
 
-.form-group input {
+.form-group input,
+.form-group textarea {
   padding: 14px 16px;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
@@ -384,17 +143,25 @@ body {
   background: #f8fafc;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group textarea:focus {
   outline: none;
   border-color: #667eea;
   background: white;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.form-group input::placeholder {
+.form-group input::placeholder,
+.form-group textarea::placeholder {
   color: #a0aec0;
 }
 
+.text-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Submit Button */
 .submit-btn {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -420,9 +187,9 @@ body {
 .submit-btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
-  transform: none;
 }
 
+/* Error */
 .error-message {
   background: #fed7d7;
   color: #c53030;
@@ -435,61 +202,199 @@ body {
   font-size: 0.9rem;
 }
 
-/* Remove old qr-result styles since we're using overlay now */
-.qr-result {
-  display: none;
+/* ====================== */
+/*        MODAL           */
+/* ====================== */
+
+.qr-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
 }
 
-/* Responsive - Tablet và Desktop */
-@media (min-width: 768px) {
-  .qr-result-modal {
-    width: 80vw; /* 80% cho tablet */
-  }
+.qr-result-modal {
+  background: white;
+  border-radius: 24px;
+  padding: 36px 28px;
+  max-width: 480px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.3s ease;
 }
 
-@media (min-width: 1024px) {
-  .qr-result-modal {
-    width: 70vw; /* 70% cho desktop nhỏ */
-  }
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #f8f9fa;
+  border: none;
+  font-size: 20px;
+  color: #6c757d;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: 2px solid #e9ecef;
 }
 
-@media (min-width: 1200px) {
-  .qr-result-modal {
-    width: 60vw; /* 60% cho desktop trung bình */
-  }
+.close-btn:hover {
+  background: #e9ecef;
+  color: #495057;
+  transform: rotate(90deg);
 }
 
-@media (min-width: 1440px) {
-  .qr-result-modal {
-    width: 50vw; /* 50% cho desktop lớn */
-    max-width: 800px; /* Giới hạn tối đa hợp lý */
-  }
+.result-header {
+  text-align: center;
+  margin-bottom: 28px;
 }
 
-/* Responsive - Mobile */
+.result-header i {
+  color: #48bb78;
+  font-size: 60px;
+  margin-bottom: 16px;
+}
+
+.result-header h3 {
+  color: #2d3748;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* QR + Content Wrapper - Phần gọn nhất */
+.qr-image-container {
+  max-width: 380px;
+  margin: 0 auto 24px;
+  background: #f7fafc;
+  padding: 24px 20px;
+  border-radius: 20px;
+  border: 2px solid #e2e8f0;
+  text-align: center;
+}
+
+.qr-image {
+  max-width: 260px;
+  width: 100%;
+  height: auto;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  margin: 0 auto 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.qr-content-preview {
+  background: white;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
+  text-align: left;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+.qr-content-preview p {
+  margin: 0 0 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.qr-content-preview code {
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #1a202c;
+  display: block;
+  line-height: 1.6;
+  font-family: 'Courier New', monospace;
+}
+
+/* Actions */
+.qr-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.action-btn {
+  padding: 14px 36px;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.download-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+}
+
+.close-modal-btn {
+  background: #6c757d;
+  color: white;
+  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+}
+
+.close-modal-btn:hover {
+  background: #5a6268;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(108, 117, 125, 0.4);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Responsive */
 @media (max-width: 767px) {
-  .qr-overlay {
-    padding: 15px;
-  }
-  
   .qr-result-modal {
-    padding: 30px 25px;
-    width: 90vw; /* Giữ 90% cho mobile */
+    padding: 28px 20px;
+    width: 92vw;
+    max-width: 420px;
   }
-  
-  .qr-result-modal .result-header h3 {
-    font-size: 1.6rem;
+  .qr-image {
+    max-width: 240px;
   }
-  
-  .qr-result-modal .result-header i {
-    font-size: 50px;
+  .qr-actions {
+    flex-direction: row;
   }
-  
-  .qr-result-modal .qr-image {
-    max-width: 250px;
-  }
-  
-  .qr-result-modal .action-btn {
+  .action-btn {
     padding: 14px 24px;
     font-size: 1rem;
     min-height: 50px;
@@ -499,88 +404,18 @@ body {
 @media (max-width: 480px) {
   .qr-container {
     padding: 15px;
+    min-width: 90svw;
   }
-  
   .qr-card {
-    padding: 30px 20px;
+    padding: 20px 30px;
   }
-  
   .qr-type-selector {
     flex-direction: column;
-    gap: 4px;
   }
-  
-  .type-btn {
-    padding: 10px 12px;
-    font-size: 14px;
-  }
-  
-  .qr-overlay {
-    padding: 10px;
-  }
-  
-  .qr-result-modal {
-    padding: 25px 20px;
-    width: 95vw; /* 95% cho mobile rất nhỏ */
-    margin: 0;
-  }
-  
   .close-btn {
     top: 15px;
     right: 15px;
-    width: 35px;
-    height: 35px;
-    font-size: 18px;
-  }
-  
-  .qr-result-modal .result-header {
-    margin-bottom: 20px;
-  }
-  
-  .qr-result-modal .result-header h3 {
-    font-size: 1.4rem;
-  }
-  
-  .qr-result-modal .result-header i {
-    font-size: 45px;
-    margin-bottom: 15px;
-  }
-  
-  .qr-result-modal .qr-image-container {
-    padding: 20px;
-  }
-  
-  .qr-result-modal .qr-image {
-    max-width: 200px;
-  }
-  
-  .qr-result-modal .qr-content-preview {
-    margin: 20px 0;
-    padding: 16px;
-  }
-  
-  .qr-result-modal .qr-content-preview p {
-    font-size: 15px;
-  }
-  
-  .qr-result-modal .qr-content-preview code {
-    padding: 12px;
-    font-size: 14px;
-  }
-  
-  .qr-result-modal .qr-actions {
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 25px;
-  }
-  
-  .qr-result-modal .action-btn {
-    flex: none;
-    min-height: 48px;
-  }
-  
-  .submit-btn {
-    padding: 14px;
-    font-size: 0.95rem;
+    width: 36px;
+    height: 36px;
   }
 }
