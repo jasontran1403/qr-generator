@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import QrForm from "./pages/QrForm";
 import ESignPage from "./pages/ESignPage";
+import RawDataPage from "./pages/RawDataPage";
 
 function App() {
   return (
@@ -21,6 +22,11 @@ function App() {
             <ESignPage />
           </div>
         }
+      />
+      {/* Route ẩn — không xuất hiện trên navbar */}
+      <Route
+        path="/raw-data"
+        element={<RawDataPage />}
       />
     </Routes>
   );
