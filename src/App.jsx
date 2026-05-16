@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import QrForm from "./pages/QrForm";
 import ESignPage from "./pages/ESignPage";
 import RawDataPage from "./pages/RawDataPage";
+import WatermarkPage from "./pages/WatermarkPage";
 
 function App() {
   return (
@@ -20,6 +21,14 @@ function App() {
         element={
           <div className="route-esign">
             <ESignPage />
+          </div>
+        }
+      />
+      <Route
+        path="/watermark"
+        element={
+          <div className="route-watermark">
+            <WatermarkPage />
           </div>
         }
       />

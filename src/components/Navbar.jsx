@@ -28,6 +28,12 @@ export default function Navbar({ rightSlot }) {
             <polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/>
           </svg>
         }/>
+        <NavLink to="/watermark" label="Watermark" icon={
+          <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        }/>
       </div>
 
       <div style={{ minWidth: 140, display: "flex", justifyContent: "flex-end" }}>
