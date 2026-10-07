@@ -2,8 +2,18 @@ import axios from "axios";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
-export async function generateQrCode({ qrType, url, text, productName, productionDate, expiryDate, packageWeight, batchWeight }) {
-  const formData = new URLSearchParams();
+export async function generateQrCode({
+  qrType,
+  url,
+  text,
+  productName,
+  productionDate,
+  expiryDate,
+  packageWeight,
+  batchWeight,
+  logoFile, // File object từ <input type="file"/>, có thể null
+}) {
+  const formData = new FormData();
 
   if (qrType === "url") {
     if (!url) throw new Error("Vui lòng nhập URL");
@@ -24,11 +34,25 @@ export async function generateQrCode({ qrType, url, text, productName, productio
     formData.append("expiryDate", expiryDate);
     formData.append("packageWeight", packageWeight);
     formData.append("batchWeight", batchWeight);
+  } else {
+    throw new Error("Loại QR không hợp lệ");
+  }
+
+  // Logo (tuỳ chọn) — chèn vào giữa QR ở backend
+  if (logoFile) {
+    if (!logoFile.type?.startsWith("image/")) {
+      throw new Error("Logo phải là file ảnh (PNG/JPG)");
+    }
+    if (logoFile.size > 5 * 1024 * 1024) {
+      throw new Error("Logo tối đa 5MB");
+    }
+    formData.append("logo", logoFile);
   }
 
   const res = await axios.post(`${API_BASE}/api/tools/qr/generate`, formData, {
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      // KHÔNG set "Content-Type" bằng tay cho FormData —
+      // axios/browser sẽ tự thêm boundary cho multipart/form-data.
       "ngrok-skip-browser-warning": "69420",
     },
   });
@@ -38,7 +62,7 @@ export async function generateQrCode({ qrType, url, text, productName, productio
     throw new Error(res.data?.message || "Tạo QR thất bại");
   }
 
-  let qrImage = res.data.data?.qrImage;   // ← lấy đúng từ data.data
+  let qrImage = res.data.data?.qrImage; // ← lấy đúng từ data.data
   if (!qrImage) throw new Error("Server không trả về ảnh QR");
 
   if (qrImage.startsWith("http")) {

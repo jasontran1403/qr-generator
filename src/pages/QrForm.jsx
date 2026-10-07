@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { generateQrCode } from "../services/qrService";
 
@@ -16,6 +16,44 @@ const QrForm = () => {
   const [error, setError] = useState("");
   const [showResult, setShowResult] = useState(false);
 
+  // Logo (tuỳ chọn)
+  const [logoFile, setLogoFile] = useState(null);
+  const [logoPreview, setLogoPreview] = useState(null);
+  const logoInputRef = useRef(null);
+
+  // Dọn URL blob khi unmount hoặc đổi logo
+  useEffect(() => {
+    return () => {
+      if (logoPreview) URL.revokeObjectURL(logoPreview);
+    };
+  }, [logoPreview]);
+
+  const handleLogoChange = (e) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (!f.type?.startsWith("image/")) {
+      setError("Logo phải là file ảnh (PNG/JPG).");
+      e.target.value = "";
+      return;
+    }
+    if (f.size > 5 * 1024 * 1024) {
+      setError("Logo tối đa 5MB.");
+      e.target.value = "";
+      return;
+    }
+    setError("");
+    if (logoPreview) URL.revokeObjectURL(logoPreview);
+    setLogoFile(f);
+    setLogoPreview(URL.createObjectURL(f));
+  };
+
+  const clearLogo = () => {
+    if (logoPreview) URL.revokeObjectURL(logoPreview);
+    setLogoFile(null);
+    setLogoPreview(null);
+    if (logoInputRef.current) logoInputRef.current.value = "";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -27,6 +65,7 @@ const QrForm = () => {
         qrType, url, text,
         productName, productionDate, expiryDate,
         packageWeight, batchWeight,
+        logoFile, // null nếu user không chọn → backend trả QR không logo
       });
       setQrImage(qr);
       setShowResult(true);
@@ -111,6 +150,76 @@ const QrForm = () => {
     return null;
   };
 
+  // ── Khối upload logo ──
+  const renderLogoUploader = () => (
+    <div>
+      <label style={labelStyle}>
+        Logo ở giữa QR <span style={{ color: "#94A3B8", fontWeight: 500 }}>(tuỳ chọn)</span>
+      </label>
+
+      <input
+        ref={logoInputRef}
+        id="qr-logo-input"
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        onChange={handleLogoChange}
+        style={{ display: "none" }}
+      />
+
+      {!logoPreview ? (
+        <label htmlFor="qr-logo-input" style={{
+          display: "flex", alignItems: "center", justifyContent: "center",
+          gap: 8, padding: "14px",
+          borderRadius: 10, border: "1.5px dashed #CBD5E1",
+          background: "#F8FAFC", cursor: "pointer",
+          color: "#64748B", fontSize: 13, fontWeight: 600,
+        }}>
+          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          Chọn ảnh logo (PNG/JPG, ≤ 5MB)
+        </label>
+      ) : (
+        <div style={{
+          display: "flex", alignItems: "center", gap: 12,
+          padding: 10, borderRadius: 10,
+          border: "1px solid #E2E8F0", background: "#F8FAFC",
+        }}>
+          <img src={logoPreview} alt="logo" style={{
+            width: 48, height: 48, objectFit: "contain",
+            borderRadius: 8, background: "#fff",
+            border: "1px solid #E2E8F0",
+          }} />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{
+              fontSize: 13, color: "#1E293B", fontWeight: 600,
+              overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+            }}>
+              {logoFile?.name}
+            </div>
+            <div style={{ fontSize: 11, color: "#94A3B8" }}>
+              {(logoFile?.size / 1024).toFixed(1)} KB
+            </div>
+          </div>
+          <label htmlFor="qr-logo-input" style={{
+            ...btn, padding: "6px 10px", fontSize: 12,
+            background: "#E0E7FF", color: "#4338CA", borderRadius: 8,
+          }}>
+            Đổi
+          </label>
+          <button type="button" onClick={clearLogo} style={{
+            ...btn, padding: "6px 10px", fontSize: 12,
+            background: "#FEE2E2", color: "#B91C1C", borderRadius: 8,
+          }}>
+            Xoá
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <style>{`
@@ -126,7 +235,7 @@ const QrForm = () => {
       {/* Body */}
       <div style={{
         flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-        padding: "40px 20px",
+        padding: "40px 20px", overflowY: "auto",
         background: "linear-gradient(160deg, #F8FAFF 0%, #EEF2FF 55%, #F0FDF4 100%)",
       }}>
         <div style={{ width: "100%", maxWidth: 480, animation: "fadeUp 0.4s ease" }}>
@@ -179,6 +288,7 @@ const QrForm = () => {
             {/* Fields */}
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {renderFields()}
+              {renderLogoUploader()}
 
               {error && (
                 <div style={{
@@ -218,7 +328,12 @@ const QrForm = () => {
 
           {/* Feature pills */}
           <div style={{ display: "flex", gap: 10, marginTop: 20, justifyContent: "center", flexWrap: "wrap" }}>
-            {[{ icon: "🔗", label: "URL / Text" }, { icon: "📦", label: "Thông tin sản phẩm" }, { icon: "⬇️", label: "Tải về PNG" }].map(f => (
+            {[
+              { icon: "🔗", label: "URL / Text" },
+              { icon: "📦", label: "Thông tin sản phẩm" },
+              { icon: "🖼️", label: "Chèn logo giữa QR" },
+              { icon: "⬇️", label: "Tải về PNG" },
+            ].map(f => (
               <div key={f.label} style={{
                 display: "flex", alignItems: "center", gap: 6,
                 padding: "7px 14px", borderRadius: 20,
@@ -264,7 +379,9 @@ const QrForm = () => {
                 <svg width="22" height="22" fill="none" stroke="#16A34A" strokeWidth="2.5" strokeLinecap="round" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" /></svg>
               </div>
               <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1E293B", margin: "0 0 4px" }}>QR Code đã được tạo!</h3>
-              <p style={{ fontSize: 13, color: "#64748B", margin: 0 }}>Quét hoặc tải về để sử dụng</p>
+              <p style={{ fontSize: 13, color: "#64748B", margin: 0 }}>
+                {logoFile ? "QR có logo ở giữa — quét hoặc tải về để sử dụng" : "Quét hoặc tải về để sử dụng"}
+              </p>
             </div>
 
             {/* QR Image */}
