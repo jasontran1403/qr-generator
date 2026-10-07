@@ -26,14 +26,23 @@ export async function generateQrCode({ qrType, url, text, productName, productio
     formData.append("batchWeight", batchWeight);
   }
 
-  const res = await axios.post(`${API_BASE}/api/generate`, formData, {
+  const res = await axios.post(`${API_BASE}/api/tools/qr/generate`, formData, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       "ngrok-skip-browser-warning": "69420",
     },
   });
 
-  let qrImage = res.data.qrImage;
-  if (qrImage.startsWith("http")) qrImage = `${qrImage}?t=${Date.now()}`;
+  // ✅ Kiểm tra success và lấy đúng field
+  if (!res.data?.success) {
+    throw new Error(res.data?.message || "Tạo QR thất bại");
+  }
+
+  let qrImage = res.data.data?.qrImage;   // ← lấy đúng từ data.data
+  if (!qrImage) throw new Error("Server không trả về ảnh QR");
+
+  if (qrImage.startsWith("http")) {
+    qrImage = `${qrImage}?t=${Date.now()}`;
+  }
   return qrImage;
 }
